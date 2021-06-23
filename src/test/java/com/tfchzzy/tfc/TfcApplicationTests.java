@@ -29,17 +29,17 @@ class TfcApplicationTests {
     }
 
     @Test
-    void insert(){
+    void insert() {
         User user = new User();
-        user.setAge(22);
-        user.setName("东方不败");
+        user.setAge(77);
+        user.setName("67");
         user.setEmail("1111@qq.com");
         int insert = userMapper.insert(user);
         System.out.println(insert);
     }
 
     @Test
-    void updateUser(){
+    void updateUser() {
         User user = new User();
         user.setId(1392507867952578562L);
         user.setAge(3);
@@ -50,7 +50,7 @@ class TfcApplicationTests {
 
     //测试乐观锁,先查询在修改
     @Test
-    void testlock(){
+    void testlock() {
         //根据id查询数据
         User user = userMapper.selectById(1405473018142101506L);
         user.setAge(66);
@@ -60,19 +60,43 @@ class TfcApplicationTests {
 
     //循环查询
     @Test
-    void testforeach(){
+    void testforeach() {
         //根据id查询数据
-        List<User> users = userMapper.selectBatchIds(Arrays.asList(1,2,3));
+        List<User> users = userMapper.selectBatchIds(Arrays.asList(1, 2, 3));
         System.out.println(users);
 
     }
 
     @Test
-    void testPage(){
+    void testPage() {
         //1.创建page对象
         //2.传入两个参数 ：当前页 和 每页显示记录数
-        Page<User> page = new Page<>(1,3);
+        Page<User> page = new Page<>(1, 3);
         //调用mp分页查询的方法。
-        userMapper.sel
+        //分页的所有数据放入page
+        userMapper.selectPage(page,null);
+        //当前页
+        System.out.println(page.getCurrent());
+        //每页list合集
+        System.out.println(page.getRecords());
+        //每页显示记录数
+        System.out.println(page.getPages());
+        //总记录数
+        System.out.println(page.getTotal());
+        //显示每页记录数
+        System.out.println(page.getSize());
+        //下一页
+        System.out.println(page.hasNext());
+        //上一页
+        System.out.println(page.hasPrevious());
+
+    }
+
+
+    //物理删除
+    @Test
+    void testDelete() {
+        int result = userMapper.deleteById(1406841533369425922l);
+        System.out.println(result);
     }
 }

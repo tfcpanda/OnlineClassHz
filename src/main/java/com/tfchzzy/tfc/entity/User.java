@@ -27,4 +27,8 @@ public class User {
     @Version
     @TableField(fill = FieldFill.INSERT)
     private  Integer version;
+
+    @TableLogic
+    @TableField(fill = FieldFill.INSERT)
+    private Integer deleted;
 }
