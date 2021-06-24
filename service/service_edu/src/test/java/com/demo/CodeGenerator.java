@@ -26,7 +26,7 @@ public class CodeGenerator {
         // 2、全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir("E:\\IDEA\\onlineclasshz\\service_edu" + "/src/main/java");
+        gc.setOutputDir("E:\\IDEA\\onlineclasshz\\service\\service_edu" + "/src/main/java");
         gc.setAuthor("田付成");
         gc.setOpen(false); //生成后是否打开资源管理器
         gc.setFileOverride(false); //重新生成时文件是否覆盖
