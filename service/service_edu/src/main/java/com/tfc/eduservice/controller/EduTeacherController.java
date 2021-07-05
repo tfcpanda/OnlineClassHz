@@ -39,17 +39,17 @@ public class EduTeacherController {
     public R findAllTeacher() {
         //调用service完成查询
         List<EduTeacher> list = teacherService.list(null);
-        return R.ok().data("items",list);
+        return R.ok().data("items", list);
     }
 
     //2.逻辑删除讲师功能
     //ID需要通过路径传递id值，
     @DeleteMapping("{id}")
-    public R removeTeacher(@ApiParam(name = "id", value = "讲师ID", required = true)@PathVariable String id) {
+    public R removeTeacher(@ApiParam(name = "id", value = "讲师ID", required = true) @PathVariable String id) {
         boolean flag = teacherService.removeById(id);
-        if (flag){
+        if (flag) {
             return R.ok();
-        }else{
+        } else {
             return R.error();
         }
     }
@@ -73,10 +73,10 @@ public class EduTeacherController {
 
     /*条件查询分页*/
     @PostMapping("pageTeacher/{current}/{limit}")
-    public R pageTeacherCondition(@PathVariable long current, @PathVariable long limit, @RequestBody(required = false) TeacherQuery teacherQuery){
+    public R pageTeacherCondition(@PathVariable long current, @PathVariable long limit, @RequestBody(required = false) TeacherQuery teacherQuery) {
 
         //创建page对象
-        Page<EduTeacher> pageTeacher = new Page<>(current,limit);
+        Page<EduTeacher> pageTeacher = new Page<>(current, limit);
         //构建条件
         QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
 
@@ -85,35 +85,65 @@ public class EduTeacherController {
         String begin = teacherQuery.getBegin();
         String end = teacherQuery.getEnd();
 
-        if (!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             //构建条件
-            wrapper.like("name",name);
+            wrapper.like("name", name);
         }
 
-        if (!StringUtils.isEmpty(level)){
+        if (!StringUtils.isEmpty(level)) {
             //构建条件
-            wrapper.like("level",level);
+            wrapper.like("level", level);
         }
 
-        if (!StringUtils.isEmpty(begin)){
+        if (!StringUtils.isEmpty(begin)) {
             //构建条件
-            wrapper.ge("gmt_create",begin);
+            wrapper.ge("gmt_create", begin);
         }
-        if (!StringUtils.isEmpty(end)){
+        if (!StringUtils.isEmpty(end)) {
             //构建条件
-            wrapper.le("gmt_create",end);
+            wrapper.le("gmt_create", end);
         }
 
         //调用方法实现条件分页查询
-        teacherService.page(pageTeacher,wrapper);
+        teacherService.page(pageTeacher, wrapper);
 
         //记录总数
         long total = pageTeacher.getTotal();
 
         //数据list合集
         List<EduTeacher> records = pageTeacher.getRecords();
-        return R.ok().data("total",total).data("rows",records);
+        return R.ok().data("total", total).data("rows", records);
 
+    }
+
+    @PostMapping("addTeacher")
+    public R addTeacher(@RequestBody EduTeacher eduTeacher) {
+
+        boolean save = teacherService.save(eduTeacher);
+        if (save) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
+    }
+
+
+    //根据ID查询
+    @GetMapping("getTeacher/{id}")
+    public R getTeacher(@PathVariable String id) {
+        EduTeacher eduTeacher = teacherService.getById(id);
+        return R.ok().data("teacher", eduTeacher);
+    }
+
+    //根据Id修改
+    @PostMapping("updateTeacher")
+    public R updateTeacher(@RequestBody EduTeacher eduTeacher) {
+        boolean flag = teacherService.updateById(eduTeacher);
+        if (flag) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
     }
 
 }
