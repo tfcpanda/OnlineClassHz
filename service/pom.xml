@@ -23,11 +23,13 @@
 
     <dependencies>
         <!--引用工具类-->
-        <dependency>
-            <groupId>com.tfchzzy</groupId>
-            <artifactId>common_utils</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        <!--在service-base引用过了-->
+        <!--依赖传递-->
+<!--        <dependency>-->
+<!--            <groupId>com.tfchzzy</groupId>-->
+<!--            <artifactId>common_utils</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--        </dependency>-->
         <!--引入swagger模块-->
         <dependency>
             <groupId>com.tfchzzy</groupId>

@@ -7,6 +7,7 @@ import com.tfc.commonutils.R;
 import com.tfc.eduservice.entity.EduTeacher;
 import com.tfc.eduservice.entity.vo.TeacherQuery;
 import com.tfc.eduservice.service.EduTeacherService;
+import com.tfc.servicebase.exceptionhandler.TfcException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -38,6 +39,12 @@ public class EduTeacherController {
     @GetMapping("findAll")
     public R findAllTeacher() {
         //调用service完成查询
+        try {
+            int i = 1/0;
+        }catch (Exception e){
+            throw new TfcException(20001,"自定义异常");
+        }
+
         List<EduTeacher> list = teacherService.list(null);
         return R.ok().data("items", list);
     }
@@ -145,6 +152,8 @@ public class EduTeacherController {
             return R.error();
         }
     }
+
+
 
 }
 
