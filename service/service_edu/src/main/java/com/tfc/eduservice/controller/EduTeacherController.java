@@ -81,7 +81,8 @@ public class EduTeacherController {
 
     /*条件查询分页*/
     @PostMapping("pageTeacher/{current}/{limit}")
-    public R pageTeacherCondition(@PathVariable long current, @PathVariable long limit, @RequestBody(required = false) TeacherQuery teacherQuery) {
+    public R pageTeacherCondition(@PathVariable long current, @PathVariable long limit,
+                                  @RequestBody(required = false) TeacherQuery teacherQuery) {
 
         //创建page对象
         Page<EduTeacher> pageTeacher = new Page<>(current, limit);
