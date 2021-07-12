@@ -1,7 +1,39 @@
 <template>
   <div class="app-container">
     讲师列表
-
+    <!--  条件查询  -->
+    <!--查询表单-->
+    <el-form :inline="true" class="demo-form-inline">
+      <el-form-item>
+        <el-input v-model="teacherQuery.name" placeholder="讲师名"/>
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model="teacherQuery.level" clearable placeholder="讲师头衔">
+          <el-option :value="1" label="高级讲师"/>
+          <el-option :value="2" label="首席讲师"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="添加时间">
+        <el-date-picker
+          v-model="teacherQuery.begin"
+          type="datetime"
+          placeholder="选择开始时间"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          default-time="00:00:00"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          v-model="teacherQuery.end"
+          type="datetime"
+          placeholder="选择截止时间"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          default-time="00:00:00"
+        />
+      </el-form-item>
+      <el-button type="primary" icon="el-icon-search" @click="getList()">查 询</el-button>
+      <el-button type="default" @click="resetData()">清空</el-button>
+    </el-form>
     <!-- 表格 -->
     <el-table
       v-loading="listLoading"
@@ -35,7 +67,7 @@
       <el-table-column label="操作" width="200" align="center">
 
         <template slot-scope="scope">
-          <router-link :to="'/edu/teacher/edit/'+scope.row.id">
+          <router-link :to="'/teacher/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button type="danger" size="mini" icon="el-icon-delete"
@@ -45,7 +77,7 @@
       </el-table-column>
     </el-table>
 
-<!-- 分页  -->
+    <!-- 分页  -->
     <!-- 分页 -->
     <el-pagination
       :current-page="page"
@@ -95,7 +127,43 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+    resetData() {
+      //清空表单
+      this.teacherQuery = {}
+
+      //查询数据
+      this.getList()
+
+
+    },
+    //删除导师方法
+    removeDataById(id) {
+        console.log("进入方法")
+      this.$confirm('此操作将永久删除教师记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        //删除方法
+         console.log("进入方法1")
+        teacher.deleteTeacherId(id)
+          .then(response => {
+            //提示信息
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            //回到页面
+            this.getList()
+          })
+
+
+      })
     }
+
   },
+
+
 }
 </script>

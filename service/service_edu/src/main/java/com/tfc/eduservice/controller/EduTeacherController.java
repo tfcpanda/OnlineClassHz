@@ -112,6 +112,8 @@ public class EduTeacherController {
             //构建条件
             wrapper.le("gmt_create", end);
         }
+        //排序
+        wrapper.orderByDesc("gmt_create");
 
         //调用方法实现条件分页查询
         teacherService.page(pageTeacher, wrapper);
@@ -144,7 +146,7 @@ public class EduTeacherController {
         return R.ok().data("teacher", eduTeacher);
     }
 
-    //根据Id修改
+    //json修改
     @PostMapping("updateTeacher")
     public R updateTeacher(@RequestBody EduTeacher eduTeacher) {
         boolean flag = teacherService.updateById(eduTeacher);
@@ -154,6 +156,9 @@ public class EduTeacherController {
             return R.error();
         }
     }
+
+
+
 
 
 
