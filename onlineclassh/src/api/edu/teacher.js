@@ -32,8 +32,8 @@ export default{
 
         return request({
             //url: '/table/list',
-            url: `/eduservice/edu-teacher/getTeacher/${id}`,
-            method: 'get',
+            url: `/eduservice/edu-teacher/addTeacher`,
+            method: 'post',
             data:teacher
           })
     },
@@ -48,6 +48,12 @@ export default{
     },
 
     //修改讲师
-    //updateTeacher()
+    updateTeacherInfo(teacher){
+        return request({
+            url: `/eduservice/edu-teacher/updateTeacher`,
+            method:'post',
+            data:teacher
+        })
+    }
 }
 
