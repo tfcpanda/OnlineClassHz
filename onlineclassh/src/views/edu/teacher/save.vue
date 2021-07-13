@@ -60,18 +60,31 @@ export default {
     // const id = this.$route.params.id
     // this.fetchDataById(id)
     //  }
-
-    if (this.$route.params.id != null) {
-      const id = this.$route.params.id;
-      console.log(id);
-      this.getTeacherInfo(id);
-    }
+      this.init()
+ 
     //如果有id值就修改
 
     //如果没有id值就增加
   },
+  watch: {
+    $route(to, from) {
+      console.log("watch $route");
+      this.init()
+    },
+  },
 
   methods: {
+      init(){
+             if (this.$route.params.id != null) {
+      const id = this.$route.params.id;
+      console.log(id);
+      this.getTeacherInfo(id);
+    } else {
+      //清空表单
+      this.teacher = {};
+    }
+      },
+
     getTeacherInfo(id) {
       teacherApi.getTeacherInfo(id).then((response) => {
         this.teacher = response.data.teacher;
@@ -79,21 +92,20 @@ export default {
     },
 
     saveOrUpdate() {
-      console.log("方法运行")
+      console.log("方法运行");
       //判断是修改还是添加
-      console.log(this.teacher.id)
+      console.log(this.teacher.id);
 
       // this.saveTeacher()
-      if(!this.teacher.id){
-        this.saveTeacher()
-      }else{
-        console.log("进入修改方法")
-        this.updateTeacher()
+      if (!this.teacher.id) {
+        this.saveTeacher();
+      } else {
+        console.log("进入修改方法");
+        this.updateTeacher();
       }
       //修改
 
       //添加
-    
     },
 
     //添加导师方法
@@ -113,15 +125,15 @@ export default {
     },
 
     updateTeacher() {
-      console.log("进入修改方法1")
+      console.log("进入修改方法1");
       teacherApi.updateTeacherInfo(this.teacher).then((response) => {
-        console.log("进入修改方法2")
+        console.log("进入修改方法2");
         //提示信息
         this.$message({
           type: "success",
           message: "修改成功!",
         });
-        console.log(response)
+        console.log(response);
         //回到页面，路由跳转
         this.$router.push({ path: "/teacher/table" });
       });
