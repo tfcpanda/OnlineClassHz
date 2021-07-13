@@ -24,6 +24,36 @@
         <el-input v-model="teacher.intro" :rows="10" type="textarea" />
       </el-form-item>
       <!-- 讲师头像：TODO -->
+
+      <!-- 讲师头像 -->
+      <el-form-item label="讲师头像">
+        <!-- 头衔缩略图 -->
+        <pan-thumb :image="teacher.avatar" />
+        <!-- 文件上传按钮 -->
+        <el-button
+          type="primary"
+          icon="el-icon-upload"
+          @click="imagecropperShow = true"
+          >更换头像
+        </el-button>
+        <!--
+v-show：是否显示上传组件
+:key：类似于id，如果一个页面多个图片上传控件，可以做区分
+:url：后台上传的url地址
+@close：关闭上传组件
+@crop-upload-success：上传成功后的回调 -->
+        <image-cropper
+          v-show="imagecropperShow"
+          :width="100"
+          :height="100"
+          :key="imagecropperKey"
+          :url="BASE_API + '/eduoss/fileoss'"
+          field="file"
+          @close="close"
+          @crop-upload-success="cropSuccess"
+        />
+      </el-form-item>
+
       <el-form-item>
         <el-button
           :disabled="saveBtnDisabled"
@@ -37,8 +67,11 @@
 </template>
 
 <script>
+import ImageCropper from "@/components/ImageCropper";
+import PanThumb from "@/components/PanThumb";
 import teacherApi from "@/api/edu/teacher";
 export default {
+  components: { ImageCropper, PanThumb },
   data() {
     return {
       teacher: {
@@ -47,8 +80,15 @@ export default {
         level: 1,
         career: "",
         intro: "",
-        avatar: "",
+        avatar:
+          "https://edu-tfc.oss-cn-hangzhou.aliyuncs.com/2021/07/14/99749116266341b3962a8857308c9291weini3.jpg",
       },
+      //上传弹框组件是否显示
+      imagecropperShow: false,
+      //上传组件的key值
+      imagecropperKey: 0,
+      //获取端口号
+      BASE_API: process.env.BASE_API,
       //保存按钮禁用
       saveBtnDisabled: false,
     };
@@ -60,8 +100,8 @@ export default {
     // const id = this.$route.params.id
     // this.fetchDataById(id)
     //  }
-      this.init()
- 
+    this.init();
+
     //如果有id值就修改
 
     //如果没有id值就增加
@@ -69,21 +109,31 @@ export default {
   watch: {
     $route(to, from) {
       console.log("watch $route");
-      this.init()
+      this.init();
     },
   },
 
   methods: {
-      init(){
-             if (this.$route.params.id != null) {
-      const id = this.$route.params.id;
-      console.log(id);
-      this.getTeacherInfo(id);
-    } else {
-      //清空表单
-      this.teacher = {};
-    }
-      },
+    //关闭上传弹框的方法
+    close() {
+      this.imagecropperShow = false;
+    },
+    //上传成功的方法
+    cropSuccess(data) {
+      this.imagecropperShow = false;
+      this.teacher.avatar = data.url;
+      console.log(this.teacher.avatar);
+    },
+    init() {
+      if (this.$route.params.id != null) {
+        const id = this.$route.params.id;
+        console.log(id);
+        this.getTeacherInfo(id);
+      } else {
+        //清空表单
+        this.teacher = {};
+      }
+    },
 
     getTeacherInfo(id) {
       teacherApi.getTeacherInfo(id).then((response) => {

@@ -4,6 +4,7 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.tfc.oss.service.OssService;
 import com.tfc.oss.utils.ConstantPropertiesUtils;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class OssServiceImpl implements OssService {
 
     public String uploadFileAvatar(MultipartFile file) {
 
+
         // yourEndpoint填写Bucket所在地域对应的Endpoint。以华东1（杭州）为例，Endpoint填写为https://oss-cn-hangzhou.aliyuncs.com。
         String endPoint = ConstantPropertiesUtils.END_POINT;
         // 阿里云账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM用户进行API访问或日常运维，请登录RAM控制台创建RAM用户。
@@ -39,6 +41,10 @@ public class OssServiceImpl implements OssService {
             //添加一个随的唯一的值
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
             fileName = uuid + fileName;
+
+            //把文件按日期分类
+            String datePath = new DateTime().toString("yyyy/MM/dd");
+            fileName = datePath + "/" + fileName;
             ossClient.putObject(bucketName, fileName, inputStream);
             // 关闭OSSClient。
             ossClient.shutdown();
