@@ -117,12 +117,14 @@ export default {
     //关闭上传弹框的方法
     close() {
       this.imagecropperShow = false;
+      this.imagecropperKey = this.imagecropperKey + 1;
     },
     //上传成功的方法
     cropSuccess(data) {
       this.imagecropperShow = false;
       this.teacher.avatar = data.url;
-      console.log(this.teacher.avatar);
+
+      this.imagecropperKey = this.imagecropperKey + 1;
     },
     init() {
       if (this.$route.params.id != null) {

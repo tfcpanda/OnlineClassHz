@@ -1,0 +1,40 @@
+package com.tfc.eduservice.service.impl;
+
+import com.alibaba.excel.EasyExcel;
+import com.tfc.eduservice.entity.EduSubject;
+import com.tfc.eduservice.entity.excel.SubjectData;
+import com.tfc.eduservice.listener.SubjectExcelListener;
+import com.tfc.eduservice.mapper.EduSubjectMapper;
+import com.tfc.eduservice.service.EduSubjectService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
+
+/**
+ * <p>
+ * 课程科目 服务实现类
+ * </p>
+ *
+ * @author 田付成
+ * @since 2021-07-17
+ */
+@Service
+public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubject> implements EduSubjectService {
+
+
+    //保存上传文件
+    @Override
+    public void saveSubject(MultipartFile file,EduSubjectService subjectService) {
+
+        try {
+            InputStream in = file.getInputStream();
+            EasyExcel.read(in, SubjectData.class,new SubjectExcelListener(subjectService)).sheet().doRead();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+}
