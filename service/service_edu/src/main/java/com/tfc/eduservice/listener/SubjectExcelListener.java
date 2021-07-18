@@ -47,9 +47,9 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData> {
         //判断二级分类是否重复
         EduSubject existTwoSubject = this.existTwoSubject(subjectService, subjectData.getTwoSubjectName(), pid);
         if (existTwoSubject == null) {
-            existOneSubject = new EduSubject();
-            existOneSubject.setParentId(pid);
-            existOneSubject.setTitle(subjectData.getTwoSubjectName());
+            existTwoSubject = new EduSubject();
+            existTwoSubject.setParentId(pid);
+            existTwoSubject.setTitle(subjectData.getTwoSubjectName());
             subjectService.save(existTwoSubject);
 
         }
