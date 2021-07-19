@@ -63,36 +63,73 @@ export const constantRouterMap = [
         name: '编辑讲师',
         component: () => import('@/views/edu/teacher/save'),
         meta: { title: '编辑讲师', icon: 'table' },
-        hidden:true
+        hidden: true
       },
     ]
   },
 
-    //课程添加
-    {
-      path: '/subject',
-      component: Layout,
-      //默认重定向
-      redirect: '/subject/table',
-      name: '分类管理',
-      meta: { title: '分类管理', icon: 'example' },
-      children: [
-        {
-          path: 'list',
-          name: '课程列表',
-          component: () => import('@/views/edu/subject/list'),
-          meta: { title: '课程列表', icon: 'table' }
-        },
-        {
-          path: 'save',
-          name: '添加列表',
-          component: () => import('@/views/edu/subject/save'),
-          meta: { title: '添加列表', icon: 'tree' }
-        },
+  //课程添加
+  {
+    path: '/subject',
+    component: Layout,
+    //默认重定向
+    redirect: '/subject/table',
+    name: '分类管理',
+    meta: { title: '分类管理', icon: 'example' },
+    children: [
+      {
+        path: 'list',
+        name: '课程列表',
+        component: () => import('@/views/edu/subject/list'),
+        meta: { title: '课程列表', icon: 'table' }
+      },
+      {
+        path: 'save',
+        name: '添加列表',
+        component: () => import('@/views/edu/subject/save'),
+        meta: { title: '添加列表', icon: 'tree' }
+      },
 
-      ]
-    },
-  
+    ]
+  },
+  //课程管理模块
+  {
+    path: '/course',
+    component: Layout,
+    //默认重定向
+    redirect: '/teacher/table',
+    name: '',
+    meta: { title: '课程管理', icon: 'example' },
+    children: [
+      {
+        path: 'list',
+        name: '课程列表',
+        component: () => import('@/views/edu/course/list'),
+        meta: { title: '课程列表', icon: 'table' }
+      },
+      {
+        path: 'info',
+        name: '添加课程',
+        component: () => import('@/views/edu/course/info'),
+        meta: { title: '添加课程', icon: 'tree' }
+      },
+      {
+        path: 'chapter/:id',
+        name: '编辑课程大纲',
+        component: () => import('@/views/edu/course/chapter'),
+        meta: { title: '编辑课程大纲', icon: 'table' },
+        hidden: true
+      },
+      {
+        path: 'publish/:id',
+        name: '最终发布',
+        component: () => import('@/views/edu/course/publish'),
+        meta: { title: '最终发布', icon: 'table' },
+        hidden: true
+      },
+    ]
+  },
+
 
   {
     path: '/example',

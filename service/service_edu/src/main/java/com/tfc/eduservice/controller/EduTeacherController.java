@@ -40,11 +40,7 @@ public class EduTeacherController {
     @GetMapping("findAll")
     public R findAllTeacher() {
         //调用service完成查询
-        try {
-            int i = 1/0;
-        }catch (Exception e){
-            throw new TfcException(20001,"自定义异常");
-        }
+
 
         List<EduTeacher> list = teacherService.list(null);
         return R.ok().data("items", list);
