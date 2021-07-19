@@ -2,7 +2,10 @@ package com.tfc.eduservice.service;
 
 import com.tfc.eduservice.entity.EduSubject;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tfc.eduservice.entity.subject.OneSubject;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface EduSubjectService extends IService<EduSubject> {
 
     void saveSubject(MultipartFile file,EduSubjectService eduSubjectService);
+
+    List<OneSubject> getAllOneSubject();
 }
