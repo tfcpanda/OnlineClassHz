@@ -1,9 +1,11 @@
 package com.tfc.eduservice.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import com.tfc.commonutils.R;
+import com.tfc.eduservice.entity.vo.CourseInfoVo;
+import com.tfc.eduservice.service.EduCourseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -15,7 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/eduservice/edu-course")
+@CrossOrigin
 public class EduCourseController {
 
+    @Autowired
+    private EduCourseService eduCourseService;
+
+    @PostMapping("addCourse")
+    public R addCourse(@RequestBody CourseInfoVo courseInfoVo){
+        eduCourseService.saveCourseInfo(courseInfoVo);
+        return R.ok();
+    }
 }
 
