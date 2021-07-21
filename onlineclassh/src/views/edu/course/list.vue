@@ -20,3 +20,14 @@
     </el-form>
   </div>
 </template> 
+<script>
+export default {
+  data() {
+    return {
+        saveBtnDisabled:false
+    };
+  },
+  created() {},
+  methods: {},
+};
+</script>

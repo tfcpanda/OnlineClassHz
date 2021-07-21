@@ -15,4 +15,7 @@ import com.tfc.eduservice.entity.vo.CourseInfoVo;
 public interface EduCourseService extends IService<EduCourse> {
 
     String saveCourseInfo(CourseInfoVo courseInfoVo);
+
+    //得到所有的课程信息
+    CourseInfoVo getCourseInfo(String courseId);
 }

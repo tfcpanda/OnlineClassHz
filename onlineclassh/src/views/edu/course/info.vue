@@ -36,8 +36,8 @@
       <el-form-item label="课程类别">
         <el-select
           v-model="courseInfo.subjectParentId"
-          placeholder="一级分类" @change="subjectLevelOneChanged"
-          
+          placeholder="一级分类"
+          @change="subjectLevelOneChanged"
         >
           <el-option
             v-for="subject in subjectOneList"
@@ -48,7 +48,7 @@
         </el-select>
 
         <!-- 二级分类 -->
-        <el-select v-model="courseInfo.subjectId" placeholder="请选择" >
+        <el-select v-model="courseInfo.subjectId" placeholder="请选择">
           <el-option
             v-for="subject in SubjectTwoList"
             :key="subject.id"
@@ -68,15 +68,24 @@
         "
       </el-form-item>
       <!-- 课程简介 TODO -->
+      <!-- 课程简介-->
       <el-form-item label="课程简介">
-        <el-input
-          v-model="courseInfo.description"
-          placeholder=" 示例：机器学习项目课：从基础到搭建项目视"
-        />
+        <tinymce :height="300" v-model="courseInfo.description" />
       </el-form-item>
 
       <!-- 课程封面 TODO -->
-
+      <!-- 课程封面-->
+      <el-form-item label="课程封面">
+        <el-upload
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+          :action="BASE_API + '/eduoss/fileoss'"
+          class="avatar-uploader"
+        >
+          <img :src="courseInfo.cover" />
+        </el-upload>
+      </el-form-item>
       <el-form-item label="课程价格">
         <el-input-number
           :min="0"
@@ -99,7 +108,9 @@
 </template>
 <script>
 import courseApi from "@/api/edu/course";
+import Tinymce from "@/components/Tinymce";
 export default {
+  components: { Tinymce },
   data() {
     return {
       saveBtnDisabled: false,
@@ -109,20 +120,19 @@ export default {
         teacherId: "",
         lessonNum: 0,
         description: "",
-        cover: "",
+        cover: "/static/weini.jpg",
         price: 0,
       },
       teacherList: [],
       subjectOneList: [],
       SubjectTwoList: [],
-    
+      BASE_API: process.env.BASE_API,
     };
   },
   created() {
     this.findAllTeacher();
     this.findSubjectOne();
     this.subjectLevelOneChanged();
-
   },
   methods: {
     saveOrUpdate() {
@@ -151,18 +161,37 @@ export default {
     },
 
     subjectLevelOneChanged(value) {
-        console.log(value)
-
       for (let i = 0; i < this.subjectOneList.length; i++) {
-           var oneSubject = this.subjectOneList[i]
-                 
+        var oneSubject = this.subjectOneList[i];
 
-        if (oneSubject.id=== value) {
-             console.log("判断猴的id"+oneSubject.id)
-                this.SubjectTwoList = oneSubject.children
+        if (oneSubject.id === value) {
+          this.SubjectTwoList = oneSubject.children;
+          this.courseInfo.subjectId = "";
         }
       }
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
+    handleAvatarSuccess(res, file) {
+      console.log(res); // 上传响应
+      console.log(URL.createObjectURL(file.raw)); // base64编码
+      this.courseInfo.cover = res.data.url;
     },
   },
 };
 </script>
+
+<style scoped>
+.tinymce-container {
+  line-height: 29px;
+}
+</style>

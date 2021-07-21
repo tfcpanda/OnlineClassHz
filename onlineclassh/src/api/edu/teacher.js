@@ -19,7 +19,6 @@ export default{
     deleteTeacherId(id){
         console.log("进入方法2")
         return request({
-            
             //url: '/table/list',
             url: `/eduservice/edu-teacher/${id}`,
             method: 'delete',
