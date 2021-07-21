@@ -109,6 +109,7 @@
 <script>
 import courseApi from "@/api/edu/course";
 import Tinymce from "@/components/Tinymce";
+import subjectApi from "@/api/edu/subject";
 export default {
   components: { Tinymce },
   data() {
@@ -123,6 +124,7 @@ export default {
         cover: "/static/weini.jpg",
         price: 0,
       },
+      courseId: "",
       teacherList: [],
       subjectOneList: [],
       SubjectTwoList: [],
@@ -130,11 +132,47 @@ export default {
     };
   },
   created() {
-    this.findAllTeacher();
-    this.findSubjectOne();
+    if (this.$route.params && this.$route.params.id) {
+      console.log("传回id值，修改方法" + this.$route.params.id);
+      this.courseId = this.$route.params.id
+      this.getCourseInfoById();
+    } else {
+      console.log("没有id值，增加方法");
+      this.findAllTeacher();
+      this.findSubjectOne();
+    }
+
     this.subjectLevelOneChanged();
   },
   methods: {
+    getCourseInfoById() {
+      console.log("方法运行中"+this.courseId)
+      courseApi.getCourseInfoById(this.courseId).then((response) => {
+         console.log("方法运行后"+this.courseId)
+        //一级分类中有值，二级分类中没有值
+
+         //查询所有分类，包括一级和二级
+        subjectApi.getAllSubject()
+        .then(response =>{
+          //获取所有一级分类
+          this.subjectOneList = response.data.list
+          //把所有一级分类数组进行便利
+          for(var i = 0; i < this.subjectOneList.length;i++){
+            //获取每一个分类
+            var oneSubject = this.subjectOneList[i]
+            //比较每CourseId一级分类和所有一级分类的Id
+            if(this.courseInfo.subjectParentId == oneSubject.id){
+              //获取一级分类和所有的二级分类
+              this.SubjectTwoList = oneSubject.children
+            }
+          }
+        })
+        this.findSubjectOne();
+        //初始化所有讲师
+        this.courseInfo = response.data.courseInfoVo;
+      });
+    },
+
     saveOrUpdate() {
       courseApi.addCourseInfo(this.courseInfo).then((response) => {
         //添加课程信息成功

@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tfc.servicebase.exceptionhandler.TfcException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 /**
@@ -65,6 +66,28 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         courseInfoVo.setId(eduCourseDescription.getId());
 
         return courseInfoVo;
+    }
+
+    @Override
+    public void updateCourseInfo(CourseInfoVo courseInfoVo) {
+        //修改课程表
+        EduCourse eduCourse = new EduCourse();
+
+        BeanUtils.copyProperties(courseInfoVo,eduCourse);
+        int update = baseMapper.updateById(eduCourse);
+
+        if (update == 0){
+            throw new TfcException(20001,"修改课程信息失败");
+
+        }
+
+        //2修改课程信息表
+        EduCourseDescription eduCourseDescription = new EduCourseDescription();
+        eduCourseDescription.setId(courseInfoVo.getId());
+        eduCourseDescription.setDescription(courseInfoVo.getDescription());
+        eduCourseDescriptionService.updateById(eduCourseDescription);
+
+
     }
 
 

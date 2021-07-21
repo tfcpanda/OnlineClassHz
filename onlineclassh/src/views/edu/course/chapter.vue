@@ -55,10 +55,15 @@ export default {
       });
     },
     next() {
-      this.$router.push({ path: "/course/publish/1" });
+      console.log("转发后" + this.courseId);
+      this.$router.push({ path: "/course/publish/" + this.courseId });
+      console.log("转发后" + this.courseId);
     },
     previous() {
-      this.$router.push({ path: "/course/info" });
+      console.log("转发前" + this.courseId);
+  
+      this.$router.push({ path: '/course/info/' + this.courseId});
+      console.log("转发后" + this.courseId);
     },
   },
 };
