@@ -34,11 +34,13 @@ export default {
             method: 'get',
         })
     },
-    //根据id值查询课程信息
-    getCourseInfoById(id) {
+
+    //修改信息
+    updateCourseInfo(courseInfo) {
         return request({
-            url: `/eduservice/edu-course/getCourseInfo/${id}`,
-            method: 'get',
+            url: `/eduservice/edu-course/updateCourseInfo`,
+            method: 'post',
+            data:courseInfo
         })
     },
 

@@ -41,7 +41,6 @@ public class EduCourseController {
     @PostMapping("updateCourseInfo")
     public R updateCourseInfo(@RequestBody CourseInfoVo courseInfoVo){
         eduCourseService.updateCourseInfo(courseInfoVo);
-
         return R.ok();
     }
 }
