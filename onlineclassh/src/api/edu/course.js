@@ -44,7 +44,21 @@ export default {
         })
     },
 
+    //确认课程所有信息
+    getPublishCourseInfo(id){
+        return request({
+            url: `/eduservice/edu-course/getPublishCourseInfo/${id}`,
+            method: 'get',
+        })
+    },
 
+     //发布课程
+     publishCourse(id){
+        return request({
+            url: `/eduservice/edu-course/publishCourse/${id}`,
+            method: 'post',
+        })
+    }
 
 }
 

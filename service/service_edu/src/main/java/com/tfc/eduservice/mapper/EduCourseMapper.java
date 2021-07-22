@@ -2,6 +2,7 @@ package com.tfc.eduservice.mapper;
 
 import com.tfc.eduservice.entity.EduCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tfc.eduservice.entity.vo.CoursePublishVo;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface EduCourseMapper extends BaseMapper<EduCourse> {
 
+    public CoursePublishVo getPublishCourseInfo(String courseId);
 }

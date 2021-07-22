@@ -3,6 +3,7 @@ package com.tfc.eduservice.service.impl;
 import com.tfc.eduservice.entity.EduCourse;
 import com.tfc.eduservice.entity.EduCourseDescription;
 import com.tfc.eduservice.entity.vo.CourseInfoVo;
+import com.tfc.eduservice.entity.vo.CoursePublishVo;
 import com.tfc.eduservice.mapper.EduCourseMapper;
 import com.tfc.eduservice.service.EduCourseDescriptionService;
 import com.tfc.eduservice.service.EduCourseService;
@@ -31,10 +32,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
         //1 课程表中添加信息
         EduCourse eduCourse = new EduCourse();
-        BeanUtils.copyProperties(courseInfoVo,eduCourse);
+        BeanUtils.copyProperties(courseInfoVo, eduCourse);
         int insert = baseMapper.insert(eduCourse);
-        if (insert == 0){
-            throw new TfcException(20001,"添加数据失败");
+        if (insert == 0) {
+            throw new TfcException(20001, "添加数据失败");
         }
 
         //得到课程的ID
@@ -57,7 +58,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         EduCourse eduCourse = baseMapper.selectById(courseId);
 
         CourseInfoVo courseInfoVo = new CourseInfoVo();
-        BeanUtils.copyProperties(eduCourse,courseInfoVo);
+        BeanUtils.copyProperties(eduCourse, courseInfoVo);
 
 
         //2查询描述的信息
@@ -73,11 +74,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         //修改课程表
         EduCourse eduCourse = new EduCourse();
 
-        BeanUtils.copyProperties(courseInfoVo,eduCourse);
+        BeanUtils.copyProperties(courseInfoVo, eduCourse);
         int update = baseMapper.updateById(eduCourse);
 
-        if (update == 0){
-            throw new TfcException(20001,"修改课程信息失败");
+        if (update == 0) {
+            throw new TfcException(20001, "修改课程信息失败");
 
         }
 
@@ -88,6 +89,13 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         eduCourseDescriptionService.updateById(eduCourseDescription);
 
 
+    }
+
+    @Override
+    public CoursePublishVo publishCourseInfo(String id) {
+        CoursePublishVo coursePublishVo = baseMapper.getPublishCourseInfo(id);
+
+        return coursePublishVo;
     }
 
 
