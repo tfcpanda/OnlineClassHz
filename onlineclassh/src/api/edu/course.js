@@ -40,25 +40,41 @@ export default {
         return request({
             url: `/eduservice/edu-course/updateCourseInfo`,
             method: 'post',
-            data:courseInfo
+            data: courseInfo
         })
     },
 
     //确认课程所有信息
-    getPublishCourseInfo(id){
+    getPublishCourseInfo(id) {
         return request({
             url: `/eduservice/edu-course/getPublishCourseInfo/${id}`,
             method: 'get',
         })
     },
 
-     //发布课程
-     publishCourse(id){
+    //发布课程
+    publishCourse(id) {
         return request({
             url: `/eduservice/edu-course/publishCourse/${id}`,
             method: 'post',
         })
-    }
+    },
 
+
+    //查询所有课程
+    getCourse() {
+        return request({
+            url: `/eduservice/edu-course`,
+            method: 'get',
+        })
+    },
+
+     //删除课程
+     delCourse(courseId) {
+        return request({
+            url: `/eduservice/edu-course/${courseId}`,
+            method: 'delete',
+        })
+    }
 }
 

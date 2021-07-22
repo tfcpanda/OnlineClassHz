@@ -9,6 +9,8 @@ import com.tfc.eduservice.service.EduCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程 前端控制器
@@ -55,7 +57,7 @@ public class EduCourseController {
 
     //课程发布
     @PostMapping("publishCourse/{id}")
-    public R publishCourse(@PathVariable String id){
+    public R publishCourse(@PathVariable String id) {
         EduCourse eduCourse = new EduCourse();
         eduCourse.setId(id);
         eduCourse.setStatus("Normal");
@@ -64,6 +66,19 @@ public class EduCourseController {
     }
 
     //课程查询
+    //TODO 分页
+    @GetMapping
+    public R getCourseList() {
+        List<EduCourse> list = eduCourseService.list(null);
+        return R.ok().data("list", list);
+    }
 
+    //删除课程
+    @DeleteMapping("{courseId}")
+    public R deleteCourse(@PathVariable String courseId) {
+        eduCourseService.removeCourse(courseId);
+
+        return R.ok();
+    }
 }
 

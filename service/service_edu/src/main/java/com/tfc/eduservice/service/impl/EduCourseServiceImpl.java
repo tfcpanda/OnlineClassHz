@@ -5,9 +5,11 @@ import com.tfc.eduservice.entity.EduCourseDescription;
 import com.tfc.eduservice.entity.vo.CourseInfoVo;
 import com.tfc.eduservice.entity.vo.CoursePublishVo;
 import com.tfc.eduservice.mapper.EduCourseMapper;
+import com.tfc.eduservice.service.EduChapterService;
 import com.tfc.eduservice.service.EduCourseDescriptionService;
 import com.tfc.eduservice.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.tfc.eduservice.service.EduVideoService;
 import com.tfc.servicebase.exceptionhandler.TfcException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,13 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     private EduCourseDescriptionService eduCourseDescriptionService;
+
+
+    @Autowired
+    private EduChapterService eduChapterService;
+
+    @Autowired
+    private EduVideoService eduVideoService;
 
     @Override
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
@@ -96,6 +105,26 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         CoursePublishVo coursePublishVo = baseMapper.getPublishCourseInfo(id);
 
         return coursePublishVo;
+    }
+
+    @Override
+    public void removeCourse(String courseId) {
+
+        //删除章节
+        eduVideoService.removeByCourseId(courseId);
+
+        //删除小节
+        eduChapterService.removeByCourseId(courseId);
+
+        //删除描述
+        eduCourseDescriptionService.removeById(courseId);
+
+        //删除课程
+        int i = baseMapper.deleteById(courseId);
+
+        if (i == 0){
+            throw new TfcException(20001,"课程删除失败");
+        }
     }
 
 
