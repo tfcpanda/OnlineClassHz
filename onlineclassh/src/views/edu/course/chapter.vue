@@ -142,8 +142,8 @@ export default {
       courseId: "",
       chapter: {},
       video: {
-        videoOriginalName:'',
-        videoSourceId:'',
+        videoOriginalName: "",
+        videoSourceId: "",
       },
       dialogChapterFormVisible: false,
       dialogVideoFormVisible: false,
@@ -156,11 +156,37 @@ export default {
     this.getAllChapter();
   },
   methods: {
-    handleVodUploadSuccess(){
-        this.video.videoSourceId = response.data.videoId
+    //1
+
+    handleVodRemove(file, fileList) {
+    console.log(file)
+      videoApi.delVideoById(this.video.videoSourceId).then((response) => {
+        this.$message({
+          type: "success",
+          message: "视频删除成功!",
+        });
+      
+        //把文件列表清空
+        this.fileList = [], 
+        this.video.videoSourceId = '',
+        //上传视频名称赋值
+        this.video.videoOriginalName = ''
+      });
     },
-    handleUploadExceed(){
-        this.$message.warning('想要重新上传视频，请先删除已上传的视频')
+    //2
+    beforeVodRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+
+    handleVodUploadSuccess(response, file, fileList) {
+      //上传成功赋值id
+      this.video.videoSourceId = response.data.videoId;
+      //上传视频名称赋值
+      this.video.videoOriginalName = file.name;
+     
+    },
+    handleUploadExceed() {
+      this.$message.warning("想要重新上传视频，请先删除已上传的视频");
     },
     //===============================================小节操作======================================================
     openVideo(chapterId) {
@@ -169,6 +195,7 @@ export default {
       this.video.sort = 0;
       this.video.chapterId = chapterId;
       console.log(this.video.chapterId);
+
     },
 
     saveOrUpdateVideo() {
@@ -188,7 +215,7 @@ export default {
       }).then(() => {
         //删除方法
         console.log("进入方法1" + videoId);
-        videoApi.delVideoById(videoId).then((response) => {
+        videoApi.delVideoCourseById(videoId).then((response) => {
           //提示信息
           this.$message({
             type: "success",

@@ -2,10 +2,13 @@ package com.tfc.eduservice.controller;
 
 
 import com.tfc.commonutils.R;
+import com.tfc.eduservice.client.VodClient;
 import com.tfc.eduservice.entity.EduVideo;
 import com.tfc.eduservice.service.EduVideoService;
+import com.tfc.servicebase.exceptionhandler.TfcException;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,6 +27,9 @@ public class EduVideoController {
     @Autowired
     private EduVideoService eduVideoService;
 
+    @Autowired
+    private VodClient vodClient;
+
     //添加小节
     @PostMapping("addVideo")
     public R addVideo(@RequestBody EduVideo eduVideo){
@@ -34,6 +40,16 @@ public class EduVideoController {
     //删除小节
     @DeleteMapping("{id}")
     public R deleteVideo(@PathVariable String id){
+        //根据小节id获取视频id,调用方法删除
+        EduVideo eduVideo = eduVideoService.getById(id);
+        String videoSourceId = eduVideo.getVideoSourceId();
+        //判断小节里面是否有视频id
+        if (!StringUtils.isEmpty(videoSourceId)){
+            vodClient.removeAlyiVideo(videoSourceId);
+        }else{
+            throw new TfcException(20001,"没有视频授权id");
+        }
+
         eduVideoService.removeById(id);
         return R.ok();
     }
