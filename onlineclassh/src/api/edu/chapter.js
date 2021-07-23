@@ -46,5 +46,14 @@ export default {
 
     })
   },
+
+   //上传视频
+   delChapterById(chapterId) {
+    return request({
+      url: `/eduservice/edu-chapter/${chapterId}`,
+      method: 'delete',
+
+    })
+  },
 }
 
