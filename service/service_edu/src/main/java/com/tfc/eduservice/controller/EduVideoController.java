@@ -45,9 +45,10 @@ public class EduVideoController {
         String videoSourceId = eduVideo.getVideoSourceId();
         //判断小节里面是否有视频id
         if (!StringUtils.isEmpty(videoSourceId)){
-            vodClient.removeAlyiVideo(videoSourceId);
-        }else{
-            throw new TfcException(20001,"没有视频授权id");
+            R result = vodClient.removeAlyiVideo(videoSourceId);
+            if (result.getCode() == 20001){
+                throw new TfcException(20001,"删除视频失败使用熔断器");
+            }
         }
 
         eduVideoService.removeById(id);
