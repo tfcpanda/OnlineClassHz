@@ -1,16 +1,23 @@
 import request from '@/utils/request'
 export default {
-    getCourseList(page,limit,searchObj) {
+    getCourseList(page, limit, searchObj) {
         return request({
             url: `/eduservice/course/${page}/${limit}`,
             method: 'post',
-            data:searchObj
+            data: searchObj
         })
     },
 
-    getAllSubject(){
+    getAllSubject() {
         return request({
             url: `/eduservice/edu-subject/getAllSubject`,
+            method: 'get'
+        })
+    },
+
+    getById(courseId) {
+        return request({
+            url: `/eduservice/course/${courseId}`,
             method: 'get'
         })
     }

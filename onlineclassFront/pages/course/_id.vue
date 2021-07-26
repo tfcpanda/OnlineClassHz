@@ -12,11 +12,7 @@
       <div>
         <article class="c-v-pic-wrap" style="height: 357px">
           <section class="p-h-video-box" id="videoPlay">
-            <img
-              :src="course.cover"
-              :alt="course.cover"
-              class="dis c-v-pic"
-            />
+            <img height="357px" :src="course.cover" :alt="course.cover" class="dis c-v-pic" />
           </section>
         </article>
         <aside class="c-attr-wrap">
@@ -26,12 +22,14 @@
             </h2>
             <section class="c-attr-jg">
               <span class="c-fff">价格：</span>
-              <b class="c-yellow" style="font-size: 24px">￥{{ course.price}}</b>
-
+              <b class="c-yellow" style="font-size: 24px"
+                >￥{{ course.price }}</b
+              >
             </section>
             <section class="c-attr-mt c-attr-undis">
-              <span class="c-fff fsize14">主讲： {{ course.teacherName}}&nbsp;&nbsp;&nbsp;</span>
-
+              <span class="c-fff fsize14"
+                >主讲： {{ course.teacherName }}&nbsp;&nbsp;&nbsp;</span
+              >
             </section>
             <section class="c-attr-mt of">
               <span class="ml10 vam">
@@ -45,7 +43,7 @@
           </section>
         </aside>
         <aside class="thr-attr-box">
-          <ol class="thr-attr-ol clearfix">
+          <ol class="thr-attr-ol ">
             <li>
               <p>&nbsp;</p>
               <aside>
@@ -92,7 +90,7 @@
                   <div class="course-txt-body-wrap">
                     <section class="course-txt-body">
                       <p v-html="course.description">
-                       {{ course.description }}
+                        {{ course.description }}
                       </p>
                     </section>
                   </div>
@@ -106,20 +104,27 @@
                     <div class="lh-menu-wrap">
                       <menu id="lh-menu" class="lh-menu mt10 mr10">
                         <ul>
-                          <!-- 文件目录 -->
-                         <li v-for="chapter in chapterList" :key="chapter.id" class="lh-menu-stair">
+                          <!-- 课程章节目录 -->
+                          <li
+                            v-for="chapter in chapterList"
+                            :key="chapter.id"
+                            class="lh-menu-stair"
+                          >
                             <a
                               href="javascript: void(0)"
                               :title="chapter.title"
                               class="current-1"
                             >
-                              <em class="lh-menu-i-1 icon18 mr10"></em>{{ chapter.title}}
-
+                              <em class="lh-menu-i-1 icon18 mr10"></em
+                              >{{ chapter.title }}
                             </a>
                             <ol class="lh-menu-ol" style="display: block">
-                              <li v-for="video in chapter.children" :key="video.id" class="lh-menu-second ml30">
-
-                                <a href="#" title>
+                              <li
+                                v-for="video in chapter.videoList"
+                                :key="video.id"
+                                class="lh-menu-second ml30"
+                              >
+                             <a :href="'/player/'+video.videoSourceId" target="_blank">
                                   <span v-if="video.free === true" class="fr">
                                     <i class="free-icon vam mr10">免费试听</i>
                                   </span>
@@ -127,12 +132,7 @@
                                   >{{ video.title }}
                                 </a>
                               </li>
-                              <li class="lh-menu-second ml30">
-                                <a href="#" title class="current-2">
-                                  <em class="lh-menu-i-2 icon16 mr5">&nbsp;</em
-                                  >第二节
-                                </a>
-                              </li>
+                        
                             </ol>
                           </li>
                         </ul>
@@ -155,18 +155,17 @@
                 <ul style="height: auto">
                   <li>
                     <div class="u-face">
-                     <a :href="'/teacher/'+course.teacherId" target="_blank">
-                        <img
-                          :src="course.avatar"
-                          width="50"
-                          height="50"
-                          alt
-                        />
+                      <a :href="'/teacher/' + course.teacherId" target="_blank">
+                        <img :src="course.avatar" width="50" height="50" alt />
                       </a>
                     </div>
                     <section class="hLh30 txtOf">
-                 <a :href="'/teacher/'+course.teacherId" class="c-333 fsize16fl" target="_blank">{{ course.teacherName }}</a>
-
+                      <a
+                        :href="'/teacher/' + course.teacherId"
+                        class="c-333 fsize16fl"
+                        target="_blank"
+                        >{{ course.teacherName }}</a
+                      >
                     </section>
                     <section class="hLh20 txtOf">
                       <span class="c-999">{{ course.intro }}</span>
@@ -187,14 +186,43 @@
 <script>
 import courseApi from "@/api/course";
 export default {
-  asyncData({ params, error }) {
-    return courseApi.getById(params.id).then((response) => {
-      console.log(response);
-      return {
-        course: response.data.data.course,
-        chapterList: response.data.data.chapterVoList,
-      };
-    });
+  data() {
+    return {
+      course:[],
+      chapterList:[],
+      videoList:[],
+      courseId:''
+    };
   },
+
+  created() {
+    this.courseId = this.$route.params.id;
+    this.getCourseDetial()
+   
+  },
+
+  methods: {
+    getCourseDetial(){
+      courseApi.getById(this.courseId)
+      .then(response=>{
+         this.course = response.data.data.course
+         this.chapterList=response.data.data.chapterVoList
+         console.log(this.chapterList)
+           
+      })
+    }
+  },
+
+  // asyncData({ params, error }) {
+  //   return courseApi.getById(params.id).then((response) => {
+  //     console.log(response);
+  //     return {
+  //       course: response.data.data.course,
+  //       chapterList: response.data.data.chapterVoList,
+  //     };
+
+  //     console.log(chapterList);
+  //   });
+  // },
 };
 </script>
