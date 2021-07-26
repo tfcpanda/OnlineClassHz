@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tfc.eduservice.entity.EduCourse;
 import com.tfc.eduservice.entity.EduCourseDescription;
 import com.tfc.eduservice.entity.frontvo.CourseQueryVo;
+import com.tfc.eduservice.entity.frontvo.CourseWebVo;
 import com.tfc.eduservice.entity.vo.CourseInfoVo;
 import com.tfc.eduservice.entity.vo.CoursePublishVo;
 import com.tfc.eduservice.mapper.EduCourseMapper;
@@ -179,6 +180,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         map.put("hasNext", hasNext);
         map.put("hasPrevious", hasPrevious);
         return map;
+    }
+
+    @Override
+    public CourseWebVo getBaseCourseInfo(String courseId) {
+        return baseMapper.getBaseCourseInfo(courseId);
     }
 
 

@@ -103,4 +103,11 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         wrapper.eq("course_id",courseId);
         baseMapper.delete(wrapper);
     }
+
+    @Override
+    public List<ChapterVo> getChapterVideoByCourseId(String courseId) {
+        return null;
+    }
+
+
 }
