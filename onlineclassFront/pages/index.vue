@@ -44,7 +44,7 @@
                   <div class="cc-l-wrap">
                     <section class="course-img">
                       <img
-                        src="course.cover"
+                        :src="course.cover"
                         class="img-responsive"
                         alt="course.title"
                       />
@@ -108,13 +108,13 @@
                 <li v-for="(teacher, index) in teacherList" v-bind:key="index">
                   <section class="i-teach-wrap">
                     <div class="i-teach-pic">
-                      <a href='"/teacher/"+teacher.id' title="teacher.name">
-                        <img alt="teacher.name" src="teacher.avatar" />
+                      <a :href='"/teacher/"+teacher.id' title="teacher.name">
+                        <img alt="teacher.name" :src="teacher.avatar" />
                       </a>
                     </div>
                     <div class="mt10 hLh30 txtOf tac">
                       <a
-                        href='"/teacher/"+teacher.id'
+                        :href='"/teacher/"+teacher.id'
                         title="teacher.name"
                         class="fsize18 c-666"
                         >{{ teacher.name }}</a

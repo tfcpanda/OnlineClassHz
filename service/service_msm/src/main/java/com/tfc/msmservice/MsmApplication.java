@@ -1,4 +1,4 @@
-package com.tfc.oss;
+package com.tfc.msmservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,9 +16,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages = {"com.tfc"})
 @EnableSwagger2
 @EnableDiscoveryClient
-public class OssApplication {
+public class MsmApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OssApplication.class, args);
+        SpringApplication.run(MsmApplication.class, args);
     }
 }

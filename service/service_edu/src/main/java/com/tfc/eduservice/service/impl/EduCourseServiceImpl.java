@@ -1,5 +1,6 @@
 package com.tfc.eduservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tfc.eduservice.entity.EduCourse;
 import com.tfc.eduservice.entity.EduCourseDescription;
 import com.tfc.eduservice.entity.vo.CourseInfoVo;
@@ -15,6 +16,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -122,9 +125,17 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         //删除课程
         int i = baseMapper.deleteById(courseId);
 
-        if (i == 0){
-            throw new TfcException(20001,"课程删除失败");
+        if (i == 0) {
+            throw new TfcException(20001, "课程删除失败");
         }
+    }
+
+    @Override
+    public List<EduCourse> selectByTeacherId(String teacherId) {
+        QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("teacher_id", teacherId);
+        List<EduCourse> courses = baseMapper.selectList(queryWrapper);
+        return courses;
     }
 
 
