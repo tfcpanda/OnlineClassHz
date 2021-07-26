@@ -1,11 +1,14 @@
 package com.tfc.eduservice.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tfc.eduservice.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tfc.eduservice.entity.frontvo.CourseQueryVo;
 import com.tfc.eduservice.entity.vo.CourseInfoVo;
 import com.tfc.eduservice.entity.vo.CoursePublishVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -31,4 +34,6 @@ public interface EduCourseService extends IService<EduCourse> {
 
     //根据讲师id查询所讲课程
     List<EduCourse> selectByTeacherId(String teacherId);
+
+    Map<String, Object> pageListFront(Page<EduCourse> pageParam, CourseQueryVo courseQuery);
 }

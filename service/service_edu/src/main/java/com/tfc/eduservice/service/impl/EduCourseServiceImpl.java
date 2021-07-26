@@ -1,8 +1,10 @@
 package com.tfc.eduservice.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tfc.eduservice.entity.EduCourse;
 import com.tfc.eduservice.entity.EduCourseDescription;
+import com.tfc.eduservice.entity.frontvo.CourseQueryVo;
 import com.tfc.eduservice.entity.vo.CourseInfoVo;
 import com.tfc.eduservice.entity.vo.CoursePublishVo;
 import com.tfc.eduservice.mapper.EduCourseMapper;
@@ -16,8 +18,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -136,6 +141,44 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         queryWrapper.eq("teacher_id", teacherId);
         List<EduCourse> courses = baseMapper.selectList(queryWrapper);
         return courses;
+    }
+
+    @Override
+    public Map<String, Object> pageListFront(Page<EduCourse> pageParam, CourseQueryVo courseQuery) {
+        QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(courseQuery.getSubjectParentId())) {
+            queryWrapper.eq("subject_parent_id",
+                    courseQuery.getSubjectParentId());
+        }
+        if (!StringUtils.isEmpty(courseQuery.getSubjectId())) {
+            queryWrapper.eq("subject_id", courseQuery.getSubjectId());
+        }
+        if (!StringUtils.isEmpty(courseQuery.getBuyCountSort())) {
+            queryWrapper.orderByDesc("buy_count");
+        }
+        if (!StringUtils.isEmpty(courseQuery.getGmtCreateSort())) {
+            queryWrapper.orderByDesc("gmt_create");
+        }
+        if (!StringUtils.isEmpty(courseQuery.getPriceSort())) {
+            queryWrapper.orderByDesc("price");
+        }
+        baseMapper.selectPage(pageParam, queryWrapper);
+        List<EduCourse> records = pageParam.getRecords();
+        long current = pageParam.getCurrent();
+        long pages = pageParam.getPages();
+        long size = pageParam.getSize();
+        long total = pageParam.getTotal();
+        boolean hasNext = pageParam.hasNext();
+        boolean hasPrevious = pageParam.hasPrevious();
+        Map<String, Object> map = new HashMap< >();
+        map.put("items", records);
+        map.put("current", current);
+        map.put("pages", pages);
+        map.put("size", size);
+        map.put("total", total);
+        map.put("hasNext", hasNext);
+        map.put("hasPrevious", hasPrevious);
+        return map;
     }
 
 

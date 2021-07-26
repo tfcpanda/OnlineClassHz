@@ -25,6 +25,7 @@
           <!-- /无数据提示 结束-->
           <article v-if="data.total > 0" class="i-teacher-list">
             <ul class="of">
+
               <li v-for="item in data.items" :key="item.id">
                 <section class="i-teach-wrap">
                   <div class="i-teach-pic">
@@ -117,6 +118,7 @@ export default {
     console.log("222")
     return teacherApi.getPageList(1, 8).then((response) => {
       return { data: response.data.data };
+      
     });
   },
 
