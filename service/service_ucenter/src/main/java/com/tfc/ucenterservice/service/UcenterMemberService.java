@@ -18,8 +18,10 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UcenterMemberService extends IService<UcenterMember> {
 
-    String login(LoginVo loginVo);
+    String login(UcenterMember ucenterMember);
 
     //注册
     void register(RegisterVo registerVo);
+
+
 }

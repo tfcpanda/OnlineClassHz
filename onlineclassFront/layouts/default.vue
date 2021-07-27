@@ -5,7 +5,7 @@
       <section class="container">
         <h1 id="logo">
           <a href="#" title="谷粒学院">
-            <img src="~/assets/img/logo.png" width="100%" alt="谷粒学院">
+            <img src="~/assets/img/logo.png" width="100%" alt="谷粒学院" />
           </a>
         </h1>
         <div class="h-r-nsl">
@@ -27,42 +27,57 @@
             </router-link>
           </ul>
           <!-- / nav -->
+
           <ul class="h-r-login">
-            <li id="no-login">
-              <a href="/sing_in" title="登录">
+            <li v-if="!loginInfo.id" id="no-login">
+              <a href="/login" title="登录">
                 <em class="icon18 login-icon">&nbsp;</em>
                 <span class="vam ml5">登录</span>
               </a>
               |
-              <a href="/sign_up" title="注册">
+              <a href="/register" title="注册">
                 <span class="vam ml5">注册</span>
               </a>
             </li>
-            <li class="mr10 undis" id="is-login-one">
-              <a href="#" title="消息" id="headerMsgCountId">
+            <li v-if="loginInfo.id" id="is-login-one" class="mr10">
+              <a id="headerMsgCountId" href="#" title="消息">
                 <em class="icon18 news-icon">&nbsp;</em>
               </a>
               <q class="red-point" style="display: none">&nbsp;</q>
             </li>
-            <li class="h-r-user undis" id="is-login-two">
-              <a href="#" title>
+            <li v-if="loginInfo.id" id="is-login-two" class="h-r-user">
+              <a href="/ucenter" title>
                 <img
-                  src="~/assets/img/avatar-boy.gif"
+                  :src="loginInfo.avatar"
                   width="30"
                   height="30"
                   class="vam picImg"
                   alt
-                >
-                <span class="vam disIb" id="userName"></span>
+                />
+                <span id="userName" class="vam disIb">{{
+                  loginInfo.nickname
+                }}</span>
               </a>
-              <a href="javascript:void(0)" title="退出" onclick="exit();" class="ml5">退出</a>
+              <a
+                href="javascript:void(0);"
+                title="退出"
+                @click="logout()"
+                class="ml5"
+                >退 出</a
+              >
             </li>
             <!-- /未登录显示第1 li；登录后显示第2，3 li -->
           </ul>
+
           <aside class="h-r-search">
             <form action="#" method="post">
               <label class="h-r-s-box">
-                <input type="text" placeholder="输入你想学的课程" name="queryCourse.courseName" value>
+                <input
+                  type="text"
+                  placeholder="输入你想学的课程"
+                  name="queryCourse.courseName"
+                  value
+                />
                 <button type="submit" class="s-btn">
                   <em class="icon18">&nbsp;</em>
                 </button>
@@ -77,8 +92,8 @@
       </section>
     </header>
     <!-- /公共头引入 -->
-      
-    <nuxt/>
+
+    <nuxt />
 
     <!-- 公共底引入 -->
     <footer id="footer">
@@ -89,7 +104,9 @@
           </h4>
           <ul class="of flink-list">
             <li>
-              <a href="http://www.atguigu.com/" title="尚硅谷" target="_blank">尚硅谷</a>
+              <a href="http://www.atguigu.com/" title="尚硅谷" target="_blank"
+                >尚硅谷</a
+              >
             </li>
           </ul>
           <div class="clear"></div>
@@ -113,12 +130,12 @@
           <aside class="fl col-3 tac mt15">
             <section class="gf-tx">
               <span>
-                <img src="~/assets/img/wx-icon.png" alt>
+                <img src="~/assets/img/wx-icon.png" alt />
               </span>
             </section>
             <section class="gf-tx">
               <span>
-                <img src="~/assets/img/wb-icon.png" alt>
+                <img src="~/assets/img/wb-icon.png" alt />
               </span>
             </section>
           </aside>
@@ -135,5 +152,52 @@ import "~/assets/css/theme.css";
 import "~/assets/css/global.css";
 import "~/assets/css/web.css";
 
-export default {};
+import cookie from 'js-cookie'
+import loginApi from '@/api/login'
+
+export default {
+  data() {
+    return {
+        token:'',
+        loginInfo: {
+          id: '',
+          age: '',
+          avatar: '',
+          mobile: '',
+          nickname: '',
+          sex: ''
+        }
+    }
+  },
+  created() {
+    //获取路径里面token值
+    this.token = this.$route.query.token
+    console.log(this.token)
+
+    this.showInfo()
+  },
+  methods:{
+
+    //创建方法，从cookie获取用户信息
+    showInfo() {
+      //从cookie获取用户信息
+      var userStr = cookie.get('ucenter')
+      console.log(userStr,"这个值是多少")
+      // 把字符串转换json对象(js对象)
+      if(userStr) {
+        this.loginInfo = JSON.parse(userStr)
+      }
+    },
+
+    //退出
+    logout() {
+      //清空cookie值
+      cookie.set('guli_token','',{domain: 'localhost'})
+      cookie.set('ucenter','',{domain: 'localhost'})
+      //回到首页面
+      window.location.href = "/";
+    }
+
+  }
+};
 </script>
