@@ -162,10 +162,19 @@ export const constantRouterMap = [
         meta: {
           title: '图表显示'
         }
-      }
+      },
+
+      {
+        path: 'chart',
+        name: 'StatisticsDayChart',
+        component: () => import('@/views/statistics/daily/chart'),
+        meta: { title: '统计图表' }
+        }
   
     ]
   },
+
+
 
   {
     path: '/example',
