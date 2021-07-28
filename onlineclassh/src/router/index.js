@@ -112,7 +112,7 @@ export const constantRouterMap = [
         name: '添加课程',
         component: () => import('@/views/edu/course/info'),
         meta: { title: '添加课程', icon: 'tree' },
-        
+
       },
       {
         path: 'info/:id',
@@ -138,6 +138,34 @@ export const constantRouterMap = [
     ]
   },
 
+  //数据统计模块
+  {
+    path: '/statistics/daily',
+    component: Layout,
+    redirect: '/statistics/daily/create',
+    name: 'Statistics',
+    meta: { title: '统计分析', icon: 'example' },
+    children: [
+      {
+        path: 'create',
+        name: '生成数据',
+        component: () => import('@/views/statistics/daily/create'),
+        meta: {
+          title: '生成统计'
+        }
+      },
+
+      {
+        path: 'show',
+        name: '图表显示',
+        component: () => import('@/views/statistics/daily/create'),
+        meta: {
+          title: '图表显示'
+        }
+      }
+  
+    ]
+  },
 
   {
     path: '/example',
@@ -152,12 +180,7 @@ export const constantRouterMap = [
         component: () => import('@/views/table/index'),
         meta: { title: 'Table', icon: 'table' }
       },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
+
     ]
   },
 
